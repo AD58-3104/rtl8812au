@@ -1776,7 +1776,8 @@ config_r:
 	@echo "make config"
 	/bin/bash script/Configure script/config.in
 
-DRIVER_VERSION = $(shell grep "\#define DRIVERVERSION" include/rtw_version.h \")
+# DRIVER_VERSION = $(shell grep "\#define DRIVERVERSION" include/rtw_version.h \")
+DRIVER_VERSION = 5.6.4.2_35491.20191025
 
 dkms_install:
 	@mkdir -vp /usr/src/8812au-$(DRIVER_VERSION)
