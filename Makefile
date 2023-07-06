@@ -93,11 +93,11 @@ CONFIG_RTW_SDIO_PM_KEEP_POWER = y
 ###################### MP HW TX MODE FOR VHT #######################
 CONFIG_MP_VHT_HW_TX_MODE = n
 ###################### Platform Related #######################
-CONFIG_PLATFORM_I386_PC = y
+CONFIG_PLATFORM_I386_PC = n
 CONFIG_PLATFORM_ANDROID_ARM64 = n
 CONFIG_PLATFORM_ARM_RPI = n
 CONFIG_PLATFORM_ARM64_RPI = n
-CONFIG_PLATFORM_ARM_NV_NANO = n
+CONFIG_PLATFORM_ARM_NV_NANO = y
 CONFIG_PLATFORM_ANDROID_X86 = n
 CONFIG_PLATFORM_ANDROID_INTEL_X86 = n
 CONFIG_PLATFORM_JB_X86 = n
@@ -657,7 +657,8 @@ EXTRA_CFLAGS += -DCONFIG_IOCTL_CFG80211 -DRTW_USE_CFG80211_STA_EVENT
 SUBARCH := $(shell uname -m | sed -e "s/i.86/i386/; s/ppc/powerpc/; s/armv.l/arm/; s/aarch64/arm64/; s/riscv.*/riscv/;")
 ARCH ?= $(SUBARCH)
 CROSS_COMPILE ?=
-KVER  ?= $(shell if [ -n "${NEW_VERSION}" ] && [ -n "${FLAVOR}" ]; then echo "${NEW_VERSION}-${FLAVOR}"; else uname -r; fi)
+# KVER  ?= $(shell if [ -n "${NEW_VERSION}" ] && [ -n "${FLAVOR}" ]; then echo "${NEW_VERSION}-${FLAVOR}"; else uname -r; fi)
+KVER  := 5.10.104-tegra
 KSRC := /lib/modules/$(KVER)/build
 MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
 INSTALL_PREFIX :=
@@ -669,7 +670,7 @@ EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
 EXTRA_CFLAGS += -DCONFIG_IOCTL_CFG80211 -DRTW_USE_CFG80211_STA_EVENT
 ARCH ?= arm
 CROSS_COMPILE ?=
-KVER ?= $(shell uname -r)
+KVER := 5.10.104-tegra
 KSRC := /lib/modules/$(KVER)/build
 MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
 INSTALL_PREFIX :=
@@ -680,7 +681,7 @@ EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
 EXTRA_CFLAGS += -DCONFIG_IOCTL_CFG80211 -DRTW_USE_CFG80211_STA_EVENT
 ARCH ?= arm64
 CROSS_COMPILE ?=
-KVER ?= $(shell uname -r)
+KVER := 5.10.104-tegra
 KSRC := /lib/modules/$(KVER)/build
 MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
 INSTALL_PREFIX :=
@@ -690,7 +691,7 @@ ifeq ($(CONFIG_PLATFORM_ARM_NV_NANO), y)
 EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
 EXTRA_CFLAGS += -DCONFIG_IOCTL_CFG80211 -DRTW_USE_CFG80211_STA_EVENT
 ARCH := arm64
-KVER := $(shell uname -r)
+KVER := 5.10.104-tegra
 KSRC := /lib/modules/$(KVER)/build
 MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
 INSTALL_PREFIX :=
@@ -702,7 +703,7 @@ EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
 EXTRA_CFLAGS += -DCONFIG_IOCTL_CFG80211 -DRTW_USE_CFG80211_STA_EVENT
 ARCH ?= arm64
 CROSS_COMPILE ?=
-KVER ?= $(shell uname -r)
+KVER := 5.10.104-tegra
 KSRC := /lib/modules/$(KVER)/build
 MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
 INSTALL_PREFIX :=
@@ -714,7 +715,7 @@ EXTRA_CFLAGS += -DCONFIG_IOCTL_CFG80211 -DRTW_USE_CFG80211_STA_EVENT
 SUBARCH := $(shell uname -m | sed -e s/ppc/powerpc/)
 ARCH ?= $(SUBARCH)
 CROSS_COMPILE ?=
-KVER ?= $(shell uname -r)
+KVER := 5.10.104-tegra
 KSRC := /lib/modules/$(KVER)/build
 MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
 INSTALL_PREFIX :=
@@ -746,7 +747,7 @@ EXTRA_CFLAGS += -DCONFIG_IOCTL_CFG80211 -DRTW_USE_CFG80211_STA_EVENT
 ARCH ?= arm
 
 CROSS_COMPILE ?=
-KVER := $(shell uname -r)
+KVER := 5.10.104-tegra
 KSRC := /lib/modules/$(KVER)/build
 MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
 INSTALL_PREFIX :=
@@ -998,7 +999,7 @@ EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
 EXTRA_CFLAGS += -DCONFIG_IOCTL_CFG80211 -DRTW_USE_CFG80211_STA_EVENT
 ARCH := arm
 CROSS_COMPILE ?=
-KVER ?= $(shell uname -r)
+KVER := 5.10.104-tegra
 KSRC := /lib/modules/$(KVER)/build
 MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
 INSTALL_PREFIX :=
@@ -1029,7 +1030,7 @@ ifeq ($(CONFIG_PLATFORM_MOZART), y)
 EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN -DCONFIG_PLATFORM_MOZART
 ARCH := arm
 CROSS_COMPILE := /home/vivotek/lsp/mozart3v2/Mozart3e_Toolchain/build_arm_nofpu/usr/bin/arm-linux-
-KVER  := $(shell uname -r)
+KVER  := 5.10.104-tegra
 KSRC:= /opt/Vivotek/lsp/mozart3v2/kernel_platform/kernel/mozart_kernel-1.17
 KERNELOUTPUT := /home/pink/sample/ODM/IP8136W-VINT/tmp/kernel
 endif
@@ -1775,14 +1776,14 @@ config_r:
 	@echo "make config"
 	/bin/bash script/Configure script/config.in
 
-DRIVER_VERSION = $(shell grep "\#define DRIVERVERSION" include/rtw_version.h | awk '{print $$3}' | tr -d v\")
+DRIVER_VERSION = $(shell grep "\#define DRIVERVERSION" include/rtw_version.h \")
 
 dkms_install:
 	@mkdir -vp /usr/src/8812au-$(DRIVER_VERSION)
 	cp -r * /usr/src/8812au-$(DRIVER_VERSION)
-	dkms add -m 8812au -v $(DRIVER_VERSION)
-	+ dkms build -m 8812au -v $(DRIVER_VERSION)
-	dkms install -m 8812au -v $(DRIVER_VERSION)
+	dkms add -m 8812au -v $(DRIVER_VERSION) -k "5.10.104-tegra"
+	+ dkms build -m 8812au -v $(DRIVER_VERSION) -k "5.10.104-tegra"
+	dkms install -m 8812au -v $(DRIVER_VERSION) -k "5.10.104-tegra"
 	dkms status -m 8812au
 
 dkms_remove:
